@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Création de personnage</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1 class="title">Créer un personnage</h1>
+
+    <form method="POST" class="create_form">
+        <div class="create_parent">
+            <div class="sub_create_parent">
+                <h2 class="character-content">
+                    [ INFORMATIONS PERSONNELLES]
+                </h2>
+                <p class="create-content">
+                    <input type="text" name="last_name" id="last_name" required class="input_update" placeholder="Entrez le nom de famille...">
+                </p>
+                <p class="create-content">
+                    <input type="text" name="name" id="name" required class="input_update" placeholder="Entrez le prénom...">
+                </p>
+                <p class="create-content">
+                    <input type="text" name="age" id="age" required class="input_update" placeholder="Entrez l'âge...">
+                </p>
+                <p class="create-content">
+                    <input type="text" name="race" id="race" required class="input_update" placeholder="Entrez la race...">
+                </p>
+                <p class="create-content">
+                    <input type="text" name="social_class" id="social_class" required class="input_update" placeholder="Entrez la classe sociale...">
+                </p>
+                <p class="create-content">
+                    <input type="text" name="talent" id="talent" required class="input_update" placeholder="Entrez le talent...">
+                </p>
+                <p class="create-content">
+                    <input type="text" name="adventurer_rank" id="adventurer_rank" required class="input_update" placeholder="Entrez le rang d'aventurier...">
+                </p>
+            </div>
+
+            <div class="sub_create_parent"> 
+                <h2 class="character-content">
+                    [COMPETENCES PHYSIQUES]
+                </h2>
+                <p class="create-content">
+                    <input type="text" name="strength" id="strength" required class="input_update" placeholder="Entrez la stat de force...">
+                </p>
+                <p class="create-content">
+                    <input type="text" name="speed" id="speed" required class="input_update" placeholder="Entrez la stat de vitesse...">
+                </p>
+                <p class="create-content">
+                    <input type="text" name="resistance" id="resistance" required class="input_update" placeholder="Entrez la stat de résistance...">
+                </p>
+                <p class="create-content">
+                    <input type="text" name="sword_style" id="sword_style" required class="input_update" placeholder="Entrez le style à l'épée...">
+                </p>
+                <p class="create-content">
+                    <input type="text" name="smith_rank" id="smith_rank" required class="input_update" placeholder="Entrez le rang de forgeron...">
+                </p>
+                <p class="create-content">
+                    <input type="text" name="alchemy_rank" id="alchemy_rank" required class="input_update" placeholder="Entrez le rang d'alchimie...">
+                </p>
+            </div>
+
+            <div class="sub_create_parent">
+                <h2 class="character-content">
+                    [ COMPETENCE MAGIQUE ]
+                </h2>
+                <p class="create-content">
+                    <input type="text" name="mana_reserve" id="mana_reserve" required class="input_update" placeholder="Entrez la réserve de mana...">
+                </p>
+                <p class="create-content">
+                    <input type="text" name="mana_zone" id="mana_zone" required class="input_update" placeholder="Entrez le niveau du mana-zone...">
+                </p>
+                <p class="create-content">
+                    <input type="text" name="magic_mastery" id="magic_mastery" required class="input_update" placeholder="Entrez les magies...">
+                </p>
+            </div>
+        </div>
+        
+        <div class="create_buttons">
+            <input type="submit" value="Créer le personnage" class="create_margin">
+            <a href="{{url_for('index')}}" class="return_to_menu create_margin">Retourner au menu</a>
+        </div>
+    </form>
+
+</body>
+</html>

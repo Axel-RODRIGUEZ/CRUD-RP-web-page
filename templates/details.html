@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Personnage</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1 class="title-details">Personnage de {{character.name}}</h1>
+    <small class="title">(Créé le: {{ character.date_created.strftime('%Y-%m-%d %H:%M') }})</small>
+    <div class="buttons-parent">
+        <p class="character-content">
+            <a href="{{ url_for('update', id=character.id) }}" class="action-link update-link">Modifier le personnage</a>
+
+        </p>
+        <p class="button">
+            <a href="{{ url_for('index', id=character.id) }}">Retourner à la page d'accueil</a>
+        </p>
+    </div>
+    <div class="detail-parent">
+        <div>
+
+            <h2>・ Identité</h2>
+
+            <p class="character-details">
+                Nom: {{ character.last_name }}
+            </p>
+            <p class="character-details"> 
+                Prénom: {{ character.name }}
+            </p>
+            <p class="character-details">
+                Âge: {{ character.age }}
+            </p>
+            <p class="character-details">
+                Race: {{ character.race }}
+            </p>
+            <p class="character-details">
+                Classe sociale: {{ character.social_class }}
+            </p>
+            <p class="character-details">
+                Talent: {{ character.talent }}
+            </p>
+            <p class="character-details">
+                Rang d'aventurier: {{ character.adventurer_rank}}
+            </p>
+        </div>
+        <div>
+            <h2>・ Compétences</h2>
+
+            <h3>Compétences physiques</h3>
+            <p class="character-details">
+                Force: {{character.strength}}
+            </p>
+            <p class="character-details">
+                Vitesse: {{character.speed}}
+            </p>
+            <p class="character-details">
+                Résistance: {{character.resistance}}
+            </p>
+
+            <h3>Style et maitrise d'arme</h3>
+            <p class="character-details">
+                Style / Maitrise: {{ character.sword_style }}
+            </p>
+
+            <h3>Savoir</h3>
+            <p class="character-details">
+                Rang de forgeron: {{ character.smith_rank }}
+            </p>
+            <p class="character-details">
+                Rang d'alchimiste: {{ character.alchemy_rank }}
+            </p>
+        </div>
+        <div>
+            <h2>・ Compétences magiques</h2>
+            <p class="character-details">
+                Réserve de mana: {{ character.mana_reserve }}
+            </p>
+            <p class="character-details">
+                Mana zone: {{ character.mana_zone }}
+            </p>
+            <p class="character-details">
+                Magie / Rang / Maitrise : {{ character.magic_mastery }}
+            </p>
+            <a href="{{ url_for('skills', char_id=character.id)}}">Page des skills de {{character.name}} {{character.last_name}} </a>
+        </div>
+    </div>  
+</body>
+</html>

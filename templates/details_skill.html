@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails du Skill</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1 class="title-details">Compétence : {{skill.name}} ({{character.name}})</h1>
+    <small class="title">(Créé le: {{ skill.date_created.strftime('%Y-%m-%d %H:%M') }})</small>
+
+    <div class="buttons-parent">
+        <p class="character-content">
+            <!-- Correction : update_skill nécessite char_id ET skill_id -->
+            <a href="{{ url_for('update_skill', char_id=character.id, skill_id=skill.id) }}" class="action-link update-link">Modifier la compétence</a>
+
+        </p>
+        <p class="button">
+            <!-- Correction : Le retour mène à la page des skills du personnage (char_id) -->
+            <a href="{{ url_for('skills', char_id=character.id) }}">Retourner à la page des compétences</a>
+        </p>
+    </div>
+    
+    <div class="detail-parent">
+        <div class="detail-content">
+            <h2>Description de la compétence</h2>
+            <p class="character-details">{{ skill.content }}</p>
+        </div>
+    </div>
+</body>
+</html>

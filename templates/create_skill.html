@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Création de compétence pour {{ character.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1 class="title">Créer une compétence pour {{ character.name }}</h1>
+
+    <form method="POST" action="{{ url_for('create_skill', char_id=character.id) }}" class="create_form">
+        <div class="create_parent">
+            <p class="create-content">
+                <input type="text" name="name" id="name" required class="input_update" placeholder="Entrez le nom du skill...">
+            </p>
+            <p class="create-content">
+                <input type="text" name="content" id="content" required class="input_update" placeholder="Entrez la description du skill...">
+            </p>
+         </div>
+
+        <div class="create_buttons">
+            <input type="submit" value="Créer le skill" class="create_margin">
+                 <a href="{{url_for('skills', char_id=character.id)}}" class="return_to_menu create_margin">Retourner aux compétences</a>
+        </div>
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste de Skill</title>
+    <!-- Assurez-vous que le fichier CSS existe dans static/css/style.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1 class="title">Liste de Skills de {{character.name}} {{character.last_name}} </h1>
+
+    <!-- Lien pour créer un nouveau skill -->
+    <a href="{{ url_for('create_skill', char_id=character.id)}}" class="create_button">Créer un skill</a>
+
+    {% for skill in skills %}
+        <div class="character_div">
+            <p class="character-content">
+                [ID: {{ skill.id }}] - <a href="{{url_for('details_skill', char_id=character.id, skill_id=skill.id)}}">{{ skill.name }}</a>
+                <small>(Créé le: {{ skill.date_created.strftime('%Y-%m-%d %H:%M') }})</small>
+
+            </p>
+            <p class="button">
+
+                <a href="{{ url_for('update_skill', char_id=character.id, skill_id=skill.id)}}" class="action-link update-link">Modifier</a>
+
+                <form action="{{ url_for('delete_skill', char_id=character.id, skill_id=skill.id)}}" method="POST">
+                    <button type="submit" class="action-link delete-link">Supprimer</button>
+                </form>
+
+            </p>
+        </div>
+    {% endfor %}
+</body>
+</html>

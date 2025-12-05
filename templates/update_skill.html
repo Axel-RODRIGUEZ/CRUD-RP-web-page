@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier le skill</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1 class="title">Modifier le skill</h1>
+
+    <form method="POST">
+        <p class="character-content">
+            Nom: <input type="text" name="name" id="name" value="{{  skill.name }}" required class="input_update">
+        </p>
+        <p class="character-content">
+            Description : <input type="text" name="content" id="content" value="{{ skill.content }} " required class="input_update">
+        </p>
+        <input type="submit" value="Mettre à jour">
+    </form>
+    
+</body>
+</html>

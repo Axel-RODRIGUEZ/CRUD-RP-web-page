@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste de personnage</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1 class="title">Liste de personnage</h1>
+
+    <a href="{{ url_for('create')}}" class="create_button">Créer un personnage</a>
+    
+    {% for character in characters %}
+        <div class="character_div">
+            <p class="character-content">
+                [ID: {{ character.id }}] - <a href="{{url_for('details', id=character.id)}}">{{ character.last_name }} {{character.name }}</a>
+                <small>(Créé le: {{ character.date_created.strftime('%Y-%m-%d %H:%M') }})</small>
+
+            </p>
+            <p class="button">
+                <a href="{{ url_for('update', id=character.id) }}" class="action-link update-link">Modifier</a>
+                <form action="{{ url_for('delete', id=character.id) }}" method="POST">
+                     <!-- Utilisation d'un bouton pour soumettre le formulaire, stylisé comme un lien -->
+                     <button type="submit" class="action-link delete-link">Supprimer</button>
+                </form>
+            </p>
+        </div>
+    {% endfor %}
+</body>
+</html>

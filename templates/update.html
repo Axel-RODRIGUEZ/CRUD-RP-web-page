@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier le personnage</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1 class="title">Modifier le personnage</h1>
+
+    <form method="POST">
+        <p class="character-content">
+            Nom: <input type="text" name="last_name" id="last_name" value="{{  character.last_name }}" required class="input_update">
+        </p>
+        <p class="character-content">
+            Prénom: <input type="text" name="name" id="name" value="{{character.name}}" required class="input_update">
+        </p>
+        <p class="character-content">
+            Age: <input type="text" name="age" id="age" value="{{character.age}}" required class="input_update">
+        </p>
+        <p class="character-content">
+            Race: <input type="text" name="race" id="race" value="{{character.race}}" required class="input_update">
+        </p>
+        <p class="character-content">
+            Classe sociale: <input type="text" name="social_class" id="social_class" value="{{character.social_class}}" required class="input_update">
+        </p>
+        <p class="character-content">
+            Talent: <input type="text" name="talent" id="talent" value="{{character.talent}}" required class="input_update">
+        </p>
+        <p class="character-content">
+            Rang d'aventurier: <input type="text" name="adventurer_rank" id="adventurer_rank" value="{{character.adventurer_rank}}" required class="input_update">
+        </p>
+
+        <p class="character-content">
+            Force: <input type="text" name="strength" id="strength" value="{{  character.strength }}" required class="input_update">
+        </p>
+        <p class="character-content">
+            Vitesse: <input type="text" name="speed" id="speed" value="{{  character.speed }}" required class="input_update">
+        </p>
+        <p class="character-content">
+            Résistance: <input type="text" name="resistance" id="resistance" value="{{  character.resistance }}" required class="input_update">
+        </p>
+        <p class="character-content">
+            Style d'épée: <input type="text" name="sword_style" id="sword_style" value="{{character.sword_style}}" required class="input_update">
+        </p>
+        <p class="character-content">
+            Rang de Forge: <input type="text" name="smith_rank" id="smith_rank" value="{{character.smith_rank}}" required class="input_update">
+        </p>
+        <p class="character-content">
+            Rang d'alchimie: <input type="text" name="alchemy_rank" id="alchemy_rank" value="{{character.alchemy_rank}}" required class="input_update">
+        </p>
+
+        <p class="character-content">
+            Réserve de mana: <input type="text" name="mana_reserve" id="mana_reserve" value="{{character.mana_reserve}}" required class="input_update">
+        </p>
+        <p class="character-content">
+            Mana zone: <input type="text" name="mana_zone" id="mana_zone" value="{{character.mana_zone}}" required class="input_update">
+        </p>
+        <p class="character-content">
+            Magie: <input type="text" name="magic_mastery" id="magic_mastery" value="{{character.magic_mastery}}" required class="input_update">
+        </p>
+        <input type="submit" value="Mettre à jour">
+    </form>
+    
+</body>
+</html>

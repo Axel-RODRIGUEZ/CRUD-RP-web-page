@@ -1,0 +1,164 @@
+:root {
+    --primary-color: #263550;
+    --secondary-color: #101828;
+    --third-color: #F8FAFC;
+
+}
+
+body{
+    margin: 0px;
+    background-color: var(--secondary-color);
+}
+
+.title{
+    display:flex;
+    justify-content: center;
+    color: var(--third-color)
+}
+
+.title-details{
+    display:flex;
+    justify-content: center;
+    color: var(--third-color);
+    margin-bottom: 0;
+}
+input[type=submit] {
+    padding:5px 15px; 
+    background-color:var(--primary-color); 
+    color: var(--third-color);
+    border: 1px solid var(--third-color);
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+}
+
+input[type=text]{
+    background-color:var(--primary-color)
+}
+
+input[type=text]:focus{
+    color:var(--third-color)
+}
+.character_div{
+    display: flex;
+    justify-content: flex-start;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+    padding: 10px;
+    background-color: var(--primary-color);
+}
+
+.character_add{
+    margin: 0 0 2% 2%;
+}
+
+.character-content{
+    color:var(--third-color)
+}
+
+.character-details{
+    color:var(--third-color)
+}
+.character-content a{
+    text-decoration:underline;
+    color:var(--third-color);
+}
+
+.character-content a:hover{
+    color:bisque;
+}
+.button a{
+    text-decoration:underline;
+    color:var(--third-color)
+}
+
+.button a:hover{
+    color:bisque
+}
+
+.button{
+    margin-left: 1%;
+}
+
+.buttons-parent{
+    display: flex;
+    justify-content: space-around;
+}
+
+.create_button{
+    display:flex;
+    justify-content: center;
+    font-size: x-large;
+    color:var(--third-color);
+}
+
+.create_button:hover{
+    color:bisque
+}
+ /* ---- */
+
+ .detail-parent{
+    display: flex;
+    justify-content: space-around;
+    background-color: var(--primary-color);
+    border: 2px solid var(--third-color);
+ }
+
+.detail-parent h2,h3{
+    margin-left: 2%;
+    color:var(--third-color)
+}
+
+ .character-content{
+    color:var(--third-color)
+}
+
+.input_update{
+    background-color:var(--primary-color);
+    color:var(--third-color);
+}
+
+.input_update:focus{
+    color:var(--third-color);
+}
+
+.return_to_menu{
+    color:var(--third-color);
+}
+
+.return_to_menu:hover{
+    color:bisque;
+}
+
+.create_parent{
+    display:flex;
+    justify-content: space-around;
+}
+
+.sub_create_parent{
+    display: flex;
+    flex-direction: column;
+}
+
+.create_buttons{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1%;
+}
+
+.create_margin{
+    margin: 0 2%;
+}
+
+.create_form{
+    background-color: var(--primary-color);
+    border: 1px white solid;
+}
+
+.create-content input{
+    color:var(--third-color);
+    background-color: var(--secondary-color);
+
+}
+
+ /* SKILL */
