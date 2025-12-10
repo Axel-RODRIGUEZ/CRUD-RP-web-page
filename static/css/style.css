@@ -83,6 +83,7 @@ input[type=text]:focus{
 .buttons-parent{
     display: flex;
     justify-content: space-around;
+    color: var(--third-color);
 }
 
 .create_button{
@@ -102,6 +103,7 @@ input[type=text]:focus{
     justify-content: space-around;
     background-color: var(--primary-color);
     border: 2px solid var(--third-color);
+    margin-bottom: 2%;
  }
 
 .detail-parent h2,h3{
@@ -162,3 +164,5 @@ input[type=text]:focus{
 }
 
  /* SKILL */
+
+ 

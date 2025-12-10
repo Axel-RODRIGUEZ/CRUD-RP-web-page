@@ -82,8 +82,12 @@
             <p class="character-details">
                 Magie / Rang / Maitrise : {{ character.magic_mastery }}
             </p>
-            <a href="{{ url_for('skills', char_id=character.id)}}">Page des skills de {{character.name}} {{character.last_name}} </a>
         </div>
-    </div>  
+    </div>
+    <div class="buttons-parent">
+        <p class="button">
+            <a href="{{ url_for('skills', char_id=character.id)}}">Page des skills de {{character.name}} {{character.last_name}} </a>
+        </p>
+    </div>
 </body>
 </html>

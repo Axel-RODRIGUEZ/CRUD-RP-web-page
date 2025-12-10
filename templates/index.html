@@ -19,10 +19,7 @@
             </p>
             <p class="button">
                 <a href="{{ url_for('update', id=character.id) }}" class="action-link update-link">Modifier</a>
-                <form action="{{ url_for('delete', id=character.id) }}" method="POST">
-                     <!-- Utilisation d'un bouton pour soumettre le formulaire, stylisé comme un lien -->
-                     <button type="submit" class="action-link delete-link">Supprimer</button>
-                </form>
+                <a href="{{url_for('delete', id=character.id) }}" class="">Supprimer</a>
             </p>
         </div>
     {% endfor %}

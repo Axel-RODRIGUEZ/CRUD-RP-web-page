@@ -10,7 +10,10 @@
     <h1 class="title">Liste de Skills de {{character.name}} {{character.last_name}} </h1>
 
     <!-- Lien pour créer un nouveau skill -->
-    <a href="{{ url_for('create_skill', char_id=character.id)}}" class="create_button">Créer un skill</a>
+    <div class="buttons-parent">
+        <a href="{{ url_for('create_skill', char_id=character.id)}}" class="create_button">Créer un skill</a>
+        <a href="{{ url_for('details', id=character.id)}}" class="create_button">Revenir en arrière</a>
+    </div>
 
     {% for skill in skills %}
         <div class="character_div">
