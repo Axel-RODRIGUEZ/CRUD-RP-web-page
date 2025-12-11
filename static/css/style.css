@@ -163,6 +163,22 @@ input[type=text]:focus{
 
 }
 
+.delete_button{
+    display:flex;
+}
+
+.delete_button button{
+    background-color: var(--primary-color);
+    border-style: none;
+    color:var(--third-color);
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.delete_button button:hover{
+    color:bisque;
+    cursor: pointer;
+}
  /* SKILL */
 
  

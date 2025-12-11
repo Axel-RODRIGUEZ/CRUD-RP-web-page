@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Création d'item pour {{ character.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1 class="title">Créer un item pour {{ character.name }}</h1>
+
+    <form method="POST" action="{{ url_for('create_item', char_id=character.id) }}" class="create_form">
+        <div class="create_parent">
+            <p class="create-content">
+                <input type="text" name="name" id="name" required class="input_update" placeholder="Entrez le nom de l'item...">
+            </p>
+            <p class="create-content">
+                <input type="text" name="content" id="content" required class="input_update" placeholder="Entrez la description de l'item...">
+            </p>
+         </div>
+
+        <div class="create_buttons">
+            <input type="submit" value="Créer l'item" class="create_margin">
+                 <a href="{{url_for('inventory', char_id=character.id)}}" class="return_to_menu create_margin">Retourner à l'inventaire</a>
+        </div>
+    </form>
+
+</body>
+</html>

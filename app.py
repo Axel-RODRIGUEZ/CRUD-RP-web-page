@@ -41,6 +41,7 @@ class Character(db.Model):
 
     # RELATION : Un personnage a plusieurs compétences (Skills)
     skills = db.relationship('Skill', backref='owner', lazy='dynamic', cascade="all, delete-orphan")
+    items = db.relationship('Item', backref='owner', lazy='dynamic', cascade="all, delete-orphan")
 
     def __repr__(self):
         return f'<Character {self.id} : {self.name}>'
@@ -57,6 +58,17 @@ class Skill(db.Model):
     
     def __repr__(self):
         return f'<Skill {self.id} : {self.name}>'
+    
+class Item(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), nullable=False, default=". . .")
+    content = db.Column(db.String(2000), nullable=False, default=". . .")
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+
+    character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=False)
+
+    def __repr__(self):
+        return f'<Item {self.id} : {self.name}>'
 
 # Crée les tables si elles n'existent pas (nécessaire pour la nouvelle table Skill)
 with app.app_context():
@@ -130,7 +142,7 @@ def create():
     else:
         return render_template('create.html') 
     
-@app.route("/delete/<int:id>", methods=["POST"]) # Changé en POST pour sécurité
+@app.route("/delete/<int:id>", methods=["POST"]) 
 def delete(id):
     character_to_delete = Character.query.get_or_404(id)
     try:
@@ -282,6 +294,72 @@ def details_skill(char_id, skill_id):
         return "Compétence non trouvée pour ce personnage.", 404
         
     return render_template('details_skill.html', skill = skill, character = character)
+
+
+# --- ROUTES POUR L'INVENTAIRE (ITEMS) ---
+
+@app.route('/character/<int:char_id>/inventory', methods=['GET'])
+def inventory(char_id):
+    character = Character.query.get_or_404(char_id)
+    items = character.items.order_by(Item.date_created.desc()).all() 
+    return render_template('inventory.html', items=items, character=character)
+
+@app.route('/character/<int:char_id>/inventory/create_item', methods=["POST", "GET"])
+def create_item(char_id):
+    character = Character.query.get_or_404(char_id)
+    if request.method == 'POST':
+        item_name = request.form['name'].strip()
+        item_content = request.form['content'].strip()
+        
+        new_item = Item(
+            name=item_name,
+            content=item_content,
+            character_id=char_id
+        )
+    
+        try:
+            db.session.add(new_item)
+            db.session.commit()
+            
+            return redirect(url_for('inventory', char_id=char_id)) 
+        except Exception as e:
+            print(f"Erreur d'ajout de l'item: {e}")
+            return "Une erreur est survenue lors de l\'ajout de l'item.", 500
+    else:
+        return render_template('create_item.html', character=character)
+    
+@app.route('/character/<int:char_id>/inventory/update_item/<int:item_id>', methods=['GET', 'POST'])
+def update_item(char_id, item_id):
+    character = Character.query.get_or_404(char_id)
+    item = Item.query.get_or_404(item_id)
+    
+    if request.method == 'POST':
+
+        new_name = request.form['name'].strip()
+        new_content = request.form['content'].strip()
+        
+        try:
+            item.name = new_name
+            item.content = new_content
+            db.session.commit()
+            return redirect(url_for('inventory', char_id=char_id)) 
+        except Exception as e:
+            print(f"Erreur de mise à jour: {e}")
+            return 'Une erreur est survenue lors de la mise à jour de la compétence.', 500
+    
+    else:
+        return render_template('update_item.html', item=item, character = character)
+
+@app.route("/character/<int:char_id>/inventory/delete_item/<int:item_id>", methods=["POST"])
+def delete_item(char_id, item_id):
+    deleted_item = Item.query.get_or_404(item_id)
+    try:
+        db.session.delete(deleted_item)
+        db.session.commit()
+  
+        return redirect(url_for('inventory', char_id=char_id)) 
+    except:
+        return 'Une erreur est survenue lors de la suppression de la compétence.', 500
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -24,10 +24,10 @@
             </p>
             <p class="button">
 
-                <a href="{{ url_for('update_skill', char_id=character.id, skill_id=skill.id)}}" class="action-link update-link">Modifier</a>
+                <a href="{{ url_for('update_skill', char_id=character.id, skill_id=skill.id)}}">Modifier</a>
 
-                <form action="{{ url_for('delete_skill', char_id=character.id, skill_id=skill.id)}}" method="POST">
-                    <button type="submit" class="action-link delete-link">Supprimer</button>
+                <form method="POST" action="{{ url_for('delete_skill', char_id=character.id, skill_id=skill.id) }}" class="delete_button">
+                    <button type="submit">Supprimer</button>
                 </form>
 
             </p>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventaire</title>
+    <!-- Assurez-vous que le fichier CSS existe dans static/css/style.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1 class="title">Inventaire de {{character.name}} {{character.last_name}} </h1>
+
+    <!-- Lien pour créer un nouveau skill -->
+    <div class="buttons-parent">
+        <a href="{{ url_for('create_item', char_id=character.id)}}" class="create_button">Créer un item</a>
+        <a href="{{ url_for('details', id=character.id)}}" class="create_button">Revenir en arrière</a>
+    </div>
+
+    {% for item in items %}
+        <div class="character_div">
+            <p class="character-content">
+                [ID: {{ item.id }}] - {{ item.name }} -
+            </p>
+            <p class="character-content">
+                 - {{ item.content }} -
+            </p>
+            <p class="character-content"><small>- (Créé le: {{ item.date_created.strftime('%Y-%m-%d %H:%M') }})</small></p>
+            <p class="button"><a href="{{ url_for('update_item', char_id=character.id, item_id=item.id)}}">Modifier</a></p>
+            <p class="button">
+                <form method="POST" action="{{ url_for('delete_item', char_id=character.id, item_id=item.id) }}" class="delete_button">
+                    <button type="submit">Supprimer</button>
+                </form>
+            </p>
+        </div>
+    {% endfor %}
+</body>
+</html>

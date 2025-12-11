@@ -14,7 +14,7 @@
 
         </p>
         <p class="button">
-            <a href="{{ url_for('index', id=character.id) }}">Retourner à la page d'accueil</a>
+            <a href="{{ url_for('index') }}">Retourner à la page d'accueil</a>
         </p>
     </div>
     <div class="detail-parent">
@@ -85,9 +85,8 @@
         </div>
     </div>
     <div class="buttons-parent">
-        <p class="button">
-            <a href="{{ url_for('skills', char_id=character.id)}}">Page des skills de {{character.name}} {{character.last_name}} </a>
-        </p>
+        <p class="button"><a href="{{ url_for('skills', char_id=character.id)}}">Page des skills de {{character.name}} {{character.last_name}} </a></p>
+        <p class="button"><a href="{{ url_for('inventory', char_id=character.id)}}">Page d'inventaire de {{character.name}} {{character.last_name}} </a></p>
     </div>
 </body>
 </html>
