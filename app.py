@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-import os # Importation nécessaire pour le chemin de la base de données
+import os 
 
-# Configuration de l'application
+
 app = Flask(__name__)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -11,7 +11,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'da
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# Modèle du Personnage
+
 class Character(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     
@@ -24,7 +24,7 @@ class Character(db.Model):
     talent = db.Column(db.String(200), nullable=False, default='Aucun')
     adventurer_rank = db.Column(db.String(200), nullable=False, default='Aucun')
 
-    # Compétences Physiques (nettoyées pour la clarté)
+    # Compétences Physiques 
     strength = db.Column(db.String(200), nullable=False, default='E')
     speed = db.Column(db.String(200), nullable=False, default='E')
     resistance = db.Column(db.String(200), nullable=False, default='E')
@@ -39,21 +39,21 @@ class Character(db.Model):
 
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
-    # RELATION : Un personnage a plusieurs compétences (Skills)
+    # RELATION 
     skills = db.relationship('Skill', backref='owner', lazy='dynamic', cascade="all, delete-orphan")
     items = db.relationship('Item', backref='owner', lazy='dynamic', cascade="all, delete-orphan")
 
     def __repr__(self):
         return f'<Character {self.id} : {self.name}>'
 
-# Modèle de la Compétence (Skill)
+
 class Skill(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False, default=". . .")
     content = db.Column(db.String(20000), nullable=False, default=". . .")
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     
-    # CLÉ ÉTRANGÈRE : Lie la compétence à un personnage (Character)
+
     character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=False)
     
     def __repr__(self):
@@ -70,7 +70,6 @@ class Item(db.Model):
     def __repr__(self):
         return f'<Item {self.id} : {self.name}>'
 
-# Crée les tables si elles n'existent pas (nécessaire pour la nouvelle table Skill)
 with app.app_context():
     db.create_all()
 
@@ -85,7 +84,7 @@ def index():
 @app.route('/create', methods=["POST", "GET"])
 def create():
     if request.method == 'POST':
-        # Utilisation de .strip() partout pour nettoyer les entrées
+
         character_last_name = request.form['last_name'].strip()
         character_name = request.form['name'].strip()
         
@@ -158,7 +157,7 @@ def update(id):
     character = Character.query.get_or_404(id) 
 
     if request.method == 'POST':
-        # Utilisation de .strip() partout pour nettoyer les entrées
+
         new_last_name = request.form['last_name'].strip()
         new_name = request.form['name'].strip()
         
@@ -220,7 +219,7 @@ def details(id):
 
 # --- ROUTES POUR LES COMPÉTENCES (SKILLS) ---
 
-# Renommé en char_id et utilise character.skills
+
 @app.route('/character/<int:char_id>/skill', methods=['GET'])
 def skills(char_id):
     character = Character.query.get_or_404(char_id)
@@ -237,13 +236,13 @@ def create_skill(char_id):
         new_skill = Skill(
             name=skill_name,
             content=skill_content,
-            character_id=char_id # Liaison du skill au personnage
+            character_id=char_id 
         )
     
         try:
             db.session.add(new_skill)
             db.session.commit()
-            # Redirige vers la page des skills du personnage
+
             return redirect(url_for('skills', char_id=char_id)) 
         except Exception as e:
             print(f"Erreur d'ajout de skill: {e}")
@@ -257,7 +256,7 @@ def delete_skill(char_id, skill_id):
     try:
         db.session.delete(deleted_skill)
         db.session.commit()
-        # Redirige vers la page des skills du personnage
+
         return redirect(url_for('skills', char_id=char_id)) 
     except:
         return 'Une erreur est survenue lors de la suppression de la compétence.', 500
@@ -268,7 +267,7 @@ def update_skill(char_id, skill_id):
     skill = Skill.query.get_or_404(skill_id)
     
     if request.method == 'POST':
-        # Utilisation de .strip() partout pour nettoyer les entrées
+
         new_name = request.form['name'].strip()
         new_content = request.form['content'].strip()
         
@@ -276,7 +275,7 @@ def update_skill(char_id, skill_id):
             skill.name = new_name
             skill.content = new_content
             db.session.commit()
-            return redirect(url_for('skills', char_id=char_id)) # Redirige vers la page des skills
+            return redirect(url_for('skills', char_id=char_id))
         except Exception as e:
             print(f"Erreur de mise à jour: {e}")
             return 'Une erreur est survenue lors de la mise à jour de la compétence.', 500
@@ -289,7 +288,7 @@ def update_skill(char_id, skill_id):
 def details_skill(char_id, skill_id):
     skill = Skill.query.get_or_404(skill_id)
     character = Character.query.get_or_404(char_id)
-    # Assurez-vous que la compétence appartient bien au personnage (vérification de sécurité)
+
     if skill.character_id != character.id:
         return "Compétence non trouvée pour ce personnage.", 404
         
