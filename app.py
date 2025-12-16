@@ -2,6 +2,23 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os 
+from logging.config import dictConfig
+
+dictConfig({
+    'version': 1,
+    'formatters': {'default': {
+        'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+    }},
+    'handlers': {'wsgi': {
+        'class': 'logging.StreamHandler',
+        'stream': 'ext://flask.logging.wsgi_errors_stream',
+        'formatter': 'default'
+    }},
+    'root': {
+        'level': 'DEBUG',
+        'handlers': ['wsgi']
+    }
+})
 
 
 app = Flask(__name__)
@@ -15,7 +32,7 @@ db = SQLAlchemy(app)
 class Character(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     
-    # Informations Personnelles
+    # Personnal info
     last_name = db.Column(db.String(200), nullable=False, default='Doe')
     name = db.Column(db.String(200), nullable=False, default='John')
     age = db.Column(db.Integer, nullable=False, default=20)
@@ -24,7 +41,7 @@ class Character(db.Model):
     talent = db.Column(db.String(200), nullable=False, default='Aucun')
     adventurer_rank = db.Column(db.String(200), nullable=False, default='Aucun')
 
-    # Compétences Physiques 
+    # Physical stats
     strength = db.Column(db.String(200), nullable=False, default='E')
     speed = db.Column(db.String(200), nullable=False, default='E')
     resistance = db.Column(db.String(200), nullable=False, default='E')
@@ -32,14 +49,14 @@ class Character(db.Model):
     smith_rank = db.Column(db.String(200), nullable=False, default='/')
     alchemy_rank = db.Column(db.String(200), nullable=False, default='/')
 
-    # Magie
+    # Magic stats
     mana_reserve = db.Column(db.String(200), nullable=False, default='Très faible')
     mana_zone = db.Column(db.String(200), nullable=False, default='/')
     magic_mastery = db.Column(db.String(2000), nullable=False, default='/')
 
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
-    # RELATION 
+    # Relation
     skills = db.relationship('Skill', backref='owner', lazy='dynamic', cascade="all, delete-orphan")
     items = db.relationship('Item', backref='owner', lazy='dynamic', cascade="all, delete-orphan")
 
@@ -74,8 +91,7 @@ with app.app_context():
     db.create_all()
 
 
-# --- ROUTES POUR LES PERSONNAGES (CHARACTER) ---
-
+# --- ROUTES FOR CHARACTERS ---
 @app.route("/", methods=["GET"])
 def index():
     characters = Character.query.order_by(Character.date_created.desc()).all()
@@ -132,10 +148,11 @@ def create():
 
         try:
             db.session.add(new_character)
+            app.logger.info(f"Personnage ajouté: {new_character}")
             db.session.commit()
             return redirect(url_for('index'))
         except Exception as e:
-            print(f"Erreur d'ajout: {e}")
+            app.logger.error(f"Erreur d'ajout: {e}")
             return 'Une erreur est survenue lors de l\'ajout du personnage.', 500
     
     else:
@@ -146,9 +163,11 @@ def delete(id):
     character_to_delete = Character.query.get_or_404(id)
     try:
         db.session.delete(character_to_delete)
+        app.logger.info(f"Personnage supprimé: {character_to_delete}")
         db.session.commit()
         return redirect(url_for('index'))
     except:
+        app.logger.error(f"Erreur lors de la suppression du personnage: {character_to_delete}")
         return 'Une erreur est survenue lors de la suppression du personnage.', 500
 
     
@@ -164,6 +183,7 @@ def update(id):
         try:
             new_age = int(request.form['age']) 
         except ValueError:
+            app.logger.error("Âge invalide fourni lors de la mise à jour.")
             return 'L\'âge doit être un nombre valide.', 400
             
         new_race = request.form['race'].strip()
@@ -201,11 +221,12 @@ def update(id):
             character.mana_reserve = new_mana_reserve
             character.mana_zone = new_mana_zone
             character.magic_mastery = new_magic_mastery
-
+            app.logger.info(f"Personnage mis à jour: {character}")
             db.session.commit()
             return redirect(url_for('index'))
+        
         except Exception as e:
-            print(f"Erreur de mise à jour: {e}")
+            app.logger.error(f"Erreur de mise à jour: {e}")
             return 'Une erreur est survenue lors de la mise à jour de la tâche.', 500
     
     else:
@@ -217,7 +238,7 @@ def details(id):
     return render_template('details.html', character = character)
 
 
-# --- ROUTES POUR LES COMPÉTENCES (SKILLS) ---
+# --- ROUTES FOR SKILLS ---
 
 
 @app.route('/character/<int:char_id>/skill', methods=['GET'])
@@ -241,11 +262,12 @@ def create_skill(char_id):
     
         try:
             db.session.add(new_skill)
+            app.logger.info(f"Compétence ajoutée: {new_skill}")
             db.session.commit()
 
             return redirect(url_for('skills', char_id=char_id)) 
         except Exception as e:
-            print(f"Erreur d'ajout de skill: {e}")
+            app.logger.error(f"Erreur d'ajout de skill: {e}")
             return 'Une erreur est survenue lors de l\'ajout de la compétence.', 500
     else:
         return render_template('create_skill.html', character=character)
@@ -255,10 +277,12 @@ def delete_skill(char_id, skill_id):
     deleted_skill = Skill.query.get_or_404(skill_id)
     try:
         db.session.delete(deleted_skill)
+        app.logger.info(f"Compétence supprimée: {deleted_skill}")
         db.session.commit()
 
         return redirect(url_for('skills', char_id=char_id)) 
     except:
+        app.logger.error(f"Erreur lors de la suppression de la compétence: {deleted_skill}")
         return 'Une erreur est survenue lors de la suppression de la compétence.', 500
 
 @app.route('/character/<int:char_id>/skill/update_skill/<int:skill_id>', methods=['GET', 'POST'])
@@ -274,10 +298,11 @@ def update_skill(char_id, skill_id):
         try:
             skill.name = new_name
             skill.content = new_content
+            app.logger.info(f"Compétence mise à jour: {skill}")
             db.session.commit()
             return redirect(url_for('skills', char_id=char_id))
         except Exception as e:
-            print(f"Erreur de mise à jour: {e}")
+            app.logger.error(f"Erreur de mise à jour: {e}")
             return 'Une erreur est survenue lors de la mise à jour de la compétence.', 500
     
     else:
@@ -290,12 +315,13 @@ def details_skill(char_id, skill_id):
     character = Character.query.get_or_404(char_id)
 
     if skill.character_id != character.id:
+        app.logger.error(f"Incohérence: la compétence {skill.id} n'appartient pas au personnage {character.id}")
         return "Compétence non trouvée pour ce personnage.", 404
         
     return render_template('details_skill.html', skill = skill, character = character)
 
 
-# --- ROUTES POUR L'INVENTAIRE (ITEMS) ---
+# --- ROUTES FOR INVENTORY ---
 
 @app.route('/character/<int:char_id>/inventory', methods=['GET'])
 def inventory(char_id):
@@ -318,11 +344,12 @@ def create_item(char_id):
     
         try:
             db.session.add(new_item)
+            app.logger.info(f"Item ajouté: {new_item}")
             db.session.commit()
             
             return redirect(url_for('inventory', char_id=char_id)) 
         except Exception as e:
-            print(f"Erreur d'ajout de l'item: {e}")
+            app.logger.error(f"Erreur d'ajout d'item: {e}")
             return "Une erreur est survenue lors de l\'ajout de l'item.", 500
     else:
         return render_template('create_item.html', character=character)
@@ -340,10 +367,11 @@ def update_item(char_id, item_id):
         try:
             item.name = new_name
             item.content = new_content
+            app.logger.info(f"Item mis à jour: {item}")
             db.session.commit()
             return redirect(url_for('inventory', char_id=char_id)) 
         except Exception as e:
-            print(f"Erreur de mise à jour: {e}")
+            app.logger.error(f"Erreur de mise à jour: {e}")
             return 'Une erreur est survenue lors de la mise à jour de la compétence.', 500
     
     else:
@@ -354,11 +382,17 @@ def delete_item(char_id, item_id):
     deleted_item = Item.query.get_or_404(item_id)
     try:
         db.session.delete(deleted_item)
+        app.logger.info(f"Item supprimé: {deleted_item}")
         db.session.commit()
   
         return redirect(url_for('inventory', char_id=char_id)) 
     except:
+        app.logger.error(f"Erreur lors de la suppression de l'item: {deleted_item}")
         return 'Une erreur est survenue lors de la suppression de la compétence.', 500
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+@app.route("/logs", methods=["GET", "POST"])
+def logs():
+    return render_template("admin_logs.html")
